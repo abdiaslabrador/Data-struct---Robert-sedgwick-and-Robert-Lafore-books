@@ -5,18 +5,14 @@ import java.util.NoSuchElementException;
 
 /*This code are from "Data Structures& Algorithms in Java Second Edition page 166-167"
  * but a make some changes for example: expand the array when the queue is full.
+ * This queue is a circular queue whose expand the capacity when is necessary
  * */
 public class ResizingArrayQueue<Item> implements Iterable<Item> {
     
-    /*
-     This queue is a circular queue whose expand the capacity when is necessary
-     */
-
 	private int maxSize;
 	public Item[] queArray;
 	public int front;
 	private int rear;
-	
 	public int front2;
     public int rear2;
 	
@@ -24,7 +20,6 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
     /**
      * Initializes an empty queue.
      */
-	
 	public ResizingArrayQueue(int s) // constructor
 	{
 		maxSize = s+1; // array is 1 cell larger
@@ -43,10 +38,10 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
 		
 		int w = 0;
 		String f = "", r = "";
-		for (int i = 0; i < queArray.length; i++) System.out.print(i+1  + " - " );
-
+		for(int i = 0; i < queArray.length; i++) 
+				System.out.print(i+1  + " - " );
 		System.out.println();
-		
+
 		for(Item i : queArray){
 			if(w== front)f="F";
 			else f="";
@@ -60,41 +55,14 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
 		System.out.println();
 		
 		Iterator t = iterator();
-		
 		while(t.hasNext())
 		{	
 			System.out.print(t.next() + " - ");
 			
 		}
 		System.out.println();
-		
-
     }
-	
-
-	public boolean isEmpty() // true if queue is empty
-	{
-		return ( rear+1==front || (front+maxSize-1==rear) );
-	}
-
-    public boolean isFull() // true if queue is full
-    {
-    	return ( rear+2==front || (front+maxSize-2==rear) );
-    }
-
-    
-	
-    public int size() // (assumes queue not empty)
-    {
-        if(rear >= front) // contiguous sequence
-            return rear-front+1;
-        else // broken sequence
-            return (maxSize-front) + (rear+1);
-    }
-    
-    
-
-   
+	  
     public void insert(Item j) // put item at rear of queue
     {
     	if (isFull())resize(2 * queArray.length, "Expand");
@@ -102,7 +70,6 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
 	    	rear = -1;
 	    queArray[++rear] = j;
     }
-
 
     public Item remove() // take item from front of queue
     {
@@ -120,6 +87,24 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
         return queArray[front];
     }
     
+    public int size() // (assumes queue not empty)
+    {
+        if(rear >= front) // contiguous sequence
+            return rear-front+1;
+        else // broken sequence
+            return (maxSize-front) + (rear+1);
+    }
+
+    public boolean isEmpty() // true if queue is empty
+	{
+		return ( rear+1==front || (front+maxSize-1==rear) );
+	}
+
+    public boolean isFull() // true if queue is full
+    {
+    	return ( rear+2==front || (front+maxSize-2==rear) );
+    }
+
     private void resize(int capacity, String EorM) {
     	/*Depends of the situation i put the rear at the last of the new array size.
          * The case is different if the queue is full and insert a item: we need to expand the array and re-order
@@ -155,9 +140,9 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
 
     // an iterator, doesn't implement remove() since it's optional
     private class ArrayIterator implements Iterator<Item> {
+
         private int i;
         
-    	
         public ArrayIterator() {
             front2 = front;
             rear2 = rear;            
@@ -170,8 +155,6 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
         public void remove() {
             throw new UnsupportedOperationException();
         }
-        
-        
         
         public Item next() {
         	
