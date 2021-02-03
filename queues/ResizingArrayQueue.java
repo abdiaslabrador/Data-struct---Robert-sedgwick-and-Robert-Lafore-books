@@ -3,9 +3,14 @@ package stacks;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/*This code are from "Data Structures& Algorithms in Java Second Edition page 166-167"
+ * but a make some changes for example: expand the array when the queue is full.
+ * */
 public class ResizingArrayQueue<Item> implements Iterable<Item> {
     
-    // initial capacity of underlying resizing array
+    /*
+     This queue is a circular queue whose expand the capacity when is necessary
+     */
 
 	private int maxSize;
 	public Item[] queArray;
@@ -17,7 +22,7 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
 	
 	
     /**
-     * Initializes an empty stack.
+     * Initializes an empty queue.
      */
 	
 	public ResizingArrayQueue(int s) // constructor
@@ -28,6 +33,10 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
 		rear =-1;
 	}
     
+	/*
+	 * I show the queue information to  understand the circular queue. Is circular because is necessary
+	 * use the space that are null
+	 * */
 	public void showMe()
     {
 		System.out.println("MaxSize:" + maxSize + " Front:" + front + " Rear:" + rear);
@@ -88,7 +97,7 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
    
     public void insert(Item j) // put item at rear of queue
     {
-    	if (isFull())resize(2 * queArray.length, "I");
+    	if (isFull())resize(2 * queArray.length, "Expand");
 	    if(rear == maxSize-1)
 	    	rear = -1;
 	    queArray[++rear] = j;
@@ -102,7 +111,7 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
         queArray[front]=null;
         front++;
         if(front == maxSize) front = 0;
-        if (size() > 0 && size() == queArray.length/4) resize(queArray.length/2, "R");
+        if (size() > 0 && size() == queArray.length/4) resize(queArray.length/2, "Minimize");
         return temp;
     }
     
@@ -111,7 +120,15 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
         return queArray[front];
     }
     
-    private void resize(int capacity, String RorI) {
+    private void resize(int capacity, String EorM) {
+    	/*Depends of the situation i put the rear at the last of the new array size.
+         * The case is different if the queue is full and insert a item: we need to expand the array and re-order
+         * the array. After put the front=0 and rear at (queArray.length/2)-2. 
+         * But if removing an item and the queue is less than queArray.length/4: we minimize the array and 
+         * put the front=0 and the rear=rear = (queArray.length/2)-1.
+         * The RorI is a variable that indicate either the action to realize is "expand" or "minimize".
+         * */
+    	
         assert capacity >= maxSize;
         int i =0;
         
@@ -123,9 +140,10 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
 		}
         queArray = copy;
         front =0;
-        if (RorI == "I")
+        
+        if (EorM == "Expand")
         	rear = (queArray.length/2)-2;
-        else if (RorI == "R")
+        else if (EorM == "Minimize")
         	rear = (queArray.length/2)-1;
         maxSize = queArray.length;
     }
@@ -165,6 +183,9 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
             return temp;
         }
         
+        /*The isEmpty2 and isFull2 function are a copy of the other function to do a for throughout
+         * the queue and don't affect the position of front and rear  
+         * */
         public boolean isEmpty2() // true if queue is empty
     	{
     		return ( rear2+1==front2 || (front2+maxSize-1==rear2) );
