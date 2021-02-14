@@ -1,6 +1,6 @@
 package javaapplication1;
 
-public class Stack<Item> implements Iterable<Item>{
+public class LinkenListStack<Item> implements Iterable<Item>{
     private Nodo first;
     private int N;
     
@@ -40,6 +40,7 @@ public class Stack<Item> implements Iterable<Item>{
         }
         return null;
     }
+    public Item peek(){return first.value}
     
     public boolean isEmpty(){ return first == null;}
     public int size(){return N;}
@@ -50,14 +51,14 @@ public class Stack<Item> implements Iterable<Item>{
 
     // an iterator, doesn't implement remove() since it's optional
     private class ReverseArrayIterator implements Iterator<Item> {
-        private Node node;
+        private Node current;
 
         public ReverseArrayIterator() {
-            node = first;
+            current = first;
         }
 
         public boolean hasNext() {
-            return !isEmpty();
+            current != null;
         }
 
         public void remove() {
@@ -66,9 +67,9 @@ public class Stack<Item> implements Iterable<Item>{
 
         public Item next() {
             if (!hasNext()) return null;
-            Node temp = node;
-            node.value = node.next;
-            return temp.item;
+            Node temp = current;
+            current.value = current.next;
+            return temp.value;
         }
     }
 }
