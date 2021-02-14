@@ -1,51 +1,56 @@
-import java.util.*;
+import java.util.Iterator;
 
-public class Cola<Item> {
-    private Nodo cabeza; // link to least recently added node
-    private Nodo ultimo; // link to most recently added node
-    private int longitud;
+public class LinkedListQueue<Item> implements Iterable {
+    private Node head; // link to least recently added node
+    private Node rear; // link to most recently added node
+    private int N;
+
     // number of items on the queue
-    private class Nodo
-    { // nested class to define nodes
-    Item item;
-    Nodo sig;
-    }
-    public boolean esVacio() {return cabeza == null;}
-    public int tamano()
+    private class Node
     {
-    return longitud; 
+        private Item item;
+        private Node next;
+
+        public Node(Item item){
+            this.item = item;
+        }
+
     }
+    
+    public boolean isEmpty() {return head == null;}
+    public int size(){return N;}
+    public Item seeFirst() {return head.item;}
+    public Item seeRear() {return rear.item;}
     // Or: N == 0.
-    public void encolar(Item item)
+    public void enqueue(Item item)
     { // Add item to the end of the list.
-        Nodo oldlast = ultimo;
-        ultimo = new Nodo();
-        ultimo.item = item;
-        ultimo.sig = null;
-        if (esVacio()) cabeza = ultimo;
+        Node oldlast = rear;
+        rear = new Node(item);
+        rear.next = null;
+        if (isEmpty()) head = rear;
         else
-        oldlast.sig = ultimo;
-        longitud++;
+        oldlast.next = rear;
+        N++;
     }
-    public Item desencolar()
+    public Item dequeue()
     { // Remove item from the beginning of the list.
-        Item item = cabeza.item;
-        cabeza = cabeza.sig;
-        if (esVacio()) ultimo = null;
-        longitud--;
+        Item item = head.item;
+        head = head.next;
+        if (isEmpty()) rear = null;
+        N--;
         return item;
     }
     public Iterator<Item> iterator(){ return new ListIterator(); }
     private class ListIterator implements Iterator<Item>
     {
-        private Nodo actual = cabeza;
-        public boolean hasNext(){ return actual != null;}
+        private Node current = head;
+        public boolean hasNext(){ return current != null;}
         public void remove() { }
         public Item next()
         {
-        Item item = actual.item;
-        actual = actual.sig;
-        return item;
+            Item item = current.item;
+            current = current.next;
+            return item;
         }
     }
     

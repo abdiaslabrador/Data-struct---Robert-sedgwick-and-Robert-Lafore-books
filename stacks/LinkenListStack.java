@@ -7,18 +7,12 @@ public class LinkedListStack<Item> implements Iterable<Item>{
 
     private class Node
     {
-        private Item value;
-        private Node next;
+        protected Item item;
+        protected Node next;
 
         public Node(Item item){
-            value = item;
+            this.item = item;
         }
-    
-        public Item get_value(){return value;}
-
-        public void set_value(Item item){value = item;}
-
-        public String toString() {return value+"";} 
     }
 
     public void push(Item item)
@@ -36,11 +30,11 @@ public class LinkedListStack<Item> implements Iterable<Item>{
             Node oldNode = first;
             first=first.next;
             N--;
-            return oldNode.value;
+            return oldNode.item;
         }
         return null;
     }
-    public Item peek(){return first.value;}
+    public Item peek(){return first.item;}
     
     public boolean isEmpty(){ return first == null;}
     public int size(){return N;}
@@ -69,7 +63,7 @@ public class LinkedListStack<Item> implements Iterable<Item>{
             if (!hasNext()) return null;
             Node temp = current;
             current = current.next;
-            return temp.value;
+            return temp.item;
         }
     }
 }
