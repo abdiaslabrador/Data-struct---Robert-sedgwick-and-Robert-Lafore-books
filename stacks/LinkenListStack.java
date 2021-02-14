@@ -1,4 +1,4 @@
-package javaapplication1;
+import java.util.Iterator;
 
 public class LinkedListStack<Item> implements Iterable<Item>{
     private Node first;
@@ -18,7 +18,7 @@ public class LinkedListStack<Item> implements Iterable<Item>{
 
         public void set_value(Item item){value = item;}
 
-        public String toString() {return value;} 
+        public String toString() {return value+"";} 
     }
 
     public void push(Item item)
