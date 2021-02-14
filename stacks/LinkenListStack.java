@@ -1,11 +1,11 @@
 package javaapplication1;
 
-public class LinkenListStack<Item> implements Iterable<Item>{
-    private Nodo first;
+public class LinkedListStack<Item> implements Iterable<Item>{
+    private Node first;
     private int N;
     
 
-    private class Node()
+    private class Node
     {
         private Item value;
         private Node next;
@@ -14,11 +14,11 @@ public class LinkenListStack<Item> implements Iterable<Item>{
             value = item;
         }
     
-        public Item get_value(){return value}
+        public Item get_value(){return value;}
 
-        public set_value(Item item){value = item}
+        public void set_value(Item item){value = item;}
 
-        public String toString() {return String.format(value);} 
+        public String toString() {return value;} 
     }
 
     public void push(Item item)
@@ -40,7 +40,7 @@ public class LinkenListStack<Item> implements Iterable<Item>{
         }
         return null;
     }
-    public Item peek(){return first.value}
+    public Item peek(){return first.value;}
     
     public boolean isEmpty(){ return first == null;}
     public int size(){return N;}
@@ -58,7 +58,7 @@ public class LinkenListStack<Item> implements Iterable<Item>{
         }
 
         public boolean hasNext() {
-            current != null;
+            return current != null;
         }
 
         public void remove() {
@@ -68,7 +68,7 @@ public class LinkenListStack<Item> implements Iterable<Item>{
         public Item next() {
             if (!hasNext()) return null;
             Node temp = current;
-            current.value = current.next;
+            current = current.next;
             return temp.value;
         }
     }
