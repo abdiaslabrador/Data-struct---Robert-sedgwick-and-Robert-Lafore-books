@@ -1,33 +1,29 @@
 package grafos1;
 
-public class Lista {
+public class LinkedList<Item> implements Iterable<Item>{
     Nodo cabeza;
     Nodo ultimo;
-    int lon;
-    Lista()
+    int longitud;
+
+    private class Nodo
     {
-        lon=0;
-        cabeza=null;  
-    }
-    public class Nodo
-    {
-    	private int valor;
+    	private Item valor;
         public Nodo sig;
-        public Nodo anterior;
+        //public Nodo anterior;
         
-        Nodo(int valor)
+        Nodo(Item valor)
         {
             sig=null;
-            anterior=null;
+            //anterior=null;
             this.valor=valor;
         }
         
-        public int getvalor()
+        public Item getvalor()
         {
             return valor;
         }
     }
-    void inser_orden(int n)
+    void inser_orden(Item n)
     {
         Nodo nuevo= new Nodo(n);
         if(cabeza==null)
@@ -52,12 +48,11 @@ public class Lista {
             if(n > p.getvalor()){
                 ante=p;
             }
-	   nuevo.sig=ante.sig;
-	   nuevo.anterior=ante;
-           ante.sig=nuevo;
+            nuevo.sig=ante.sig;
+            ante.sig=nuevo; //esto es lo mismo que nuevo.anterior=ante;
         }
     }
-    void insertar(int n)
+    void insertar(ITem n)
     {
         Nodo nuevo= new Nodo(n);
         if(cabeza==null)
@@ -71,6 +66,7 @@ public class Lista {
             ultimo=nuevo;
         }
     }
+
     void mostrar()
     {
         Nodo aux=cabeza;
@@ -78,6 +74,60 @@ public class Lista {
         {
             System.out.println("El numero es: "+ aux.getvalor());
             aux=aux.sig;
+        }
+    }
+
+    public void remove(){ //elimina la cabeza que esta como una pila
+        if(cabeza != null)
+        {   
+            Nodo temp= cabeza;
+            cabeza=cabeza.sig;
+            return temp.valor
+        }
+        return null;
+    }
+
+    public Item remove_n(int n)
+    {
+        if(hasNext())
+        {
+                if(n ==0){
+                        cabeza=null;
+
+                }
+                else if(n < longitud)
+                {
+                        Node current=cabeza;
+                        int contador=0;
+
+                        while(contador < (n-1))
+                        {
+                                current=current.sig;
+                                longitud++;
+                        }
+                        Node delete=current.sig;
+                        current.sig=delete.sig;
+                        delete.sig=null;
+                        return delete;
+                }
+                        longitud--;
+        }
+        return null;
+    }
+
+    private class ListIterator implements Iterator<Item>
+    {
+        private Node actual = cabeza;
+    
+        public boolean hasNext(){return actual != null;}
+
+        public void remove(){}
+
+        public Item next()
+        {
+            Item valor = actual.valor;
+            actual = actual.sig;
+            return valor;
         }
     }
 }
