@@ -1,11 +1,12 @@
-package grafos1;
+package stacks;
+import java.util.Iterator;
 
-public class LinkedList<Item> implements Iterable<Item>{
+public class LinkedList<Item extends Comparable<Item>> implements Iterable<Item>{
     Nodo cabeza;
     Nodo ultimo;
-    int longitud;
+    int N;
 
-    private class Nodo
+    private class Nodo implements Comparable<Item>
     {
     	private Item valor;
         public Nodo sig;
@@ -22,17 +23,28 @@ public class LinkedList<Item> implements Iterable<Item>{
         {
             return valor;
         }
+        @Override      
+        public int compareTo(Item that) {
+        	
+        	return this.getvalor().compareTo(that);
+        }
+        
     }
-    void inser_orden(Item n)
+    
+    
+    
+   public void inser_orden(Item n)
     {
         Nodo nuevo= new Nodo(n);
+
         if(cabeza==null)
         {
             cabeza=nuevo;
             ultimo=nuevo;
         }
-        else if(n < cabeza.getvalor())
-        {
+        else if(n.compareTo(cabeza.getvalor()) <=0)
+        {	
+        	System.out.println(n.compareTo(cabeza.getvalor()) );
             nuevo.sig=cabeza;
             cabeza=nuevo;
         }
@@ -40,19 +52,20 @@ public class LinkedList<Item> implements Iterable<Item>{
         {  
             Nodo ante=cabeza;
             Nodo p=cabeza;
-            while(p.sig!=null && n > p.getvalor())
+            while(p.sig!=null && (n.compareTo(p.getvalor()) == 1))
             {
                 ante=p;
                 p=p.sig;
             }
-            if(n > p.getvalor()){
+            if((n.compareTo(p.getvalor()) == 1)){
                 ante=p;
             }
             nuevo.sig=ante.sig;
             ante.sig=nuevo; //esto es lo mismo que nuevo.anterior=ante;
         }
     }
-    void insertar(ITem n)
+
+    public void insertar(Item n)
     {
         Nodo nuevo= new Nodo(n);
         if(cabeza==null)
@@ -67,7 +80,7 @@ public class LinkedList<Item> implements Iterable<Item>{
         }
     }
 
-    void mostrar()
+    public void mostrar()
     {
         Nodo aux=cabeza;
         while(aux!=null)
@@ -77,51 +90,50 @@ public class LinkedList<Item> implements Iterable<Item>{
         }
     }
 
-    public void remove(){ //elimina la cabeza que esta como una pila
+    public Item remove(){ //elimina la cabeza que esta como una pila
         if(cabeza != null)
         {   
-            Nodo temp= cabeza;
+            Item valor= cabeza.valor;
             cabeza=cabeza.sig;
-            return temp.valor
+            return valor;
         }
         return null;
     }
 
     public Item remove_n(int n)
     {
-        if(hasNext())
+        if(n ==0){
+           cabeza=null;
+        }
+        else if(n < N)
         {
-                if(n ==0){
-                        cabeza=null;
+                Nodo current=cabeza;
+                int contador=0;
 
-                }
-                else if(n < longitud)
+                while(contador < (n-1))
                 {
-                        Node current=cabeza;
-                        int contador=0;
-
-                        while(contador < (n-1))
-                        {
-                                current=current.sig;
-                                longitud++;
-                        }
-                        Node delete=current.sig;
-                        current.sig=delete.sig;
-                        delete.sig=null;
-                        return delete;
+                        current=current.sig;
+                        N++;
                 }
-                        longitud--;
+                Nodo delete=current.sig;
+                current.sig=delete.sig;
+                delete.sig=null;
+                N--;
+                return delete.valor;
         }
         return null;
     }
 
+    public Iterator<Item> iterator() 
+    {   return new ListIterator();   }
+
     private class ListIterator implements Iterator<Item>
     {
-        private Node actual = cabeza;
+        private Nodo actual = cabeza;
     
-        public boolean hasNext(){return actual != null;}
-
         public void remove(){}
+
+        public boolean hasNext(){return actual != null;}
 
         public Item next()
         {
@@ -130,4 +142,7 @@ public class LinkedList<Item> implements Iterable<Item>{
             return valor;
         }
     }
+
+    
+
 }
