@@ -1,4 +1,3 @@
-package stacks;
 import java.util.Iterator;
 
 public class LinkedList<Item extends Comparable<Item>> implements Iterable<Item>{
@@ -10,12 +9,10 @@ public class LinkedList<Item extends Comparable<Item>> implements Iterable<Item>
     {
     	private Item valor;
         public Nodo sig;
-        //public Nodo anterior;
         
         Nodo(Item valor)
         {
             sig=null;
-            //anterior=null;
             this.valor=valor;
         }
         
@@ -33,7 +30,7 @@ public class LinkedList<Item extends Comparable<Item>> implements Iterable<Item>
     
     
     
-   public void inser_orden(Item n)
+   public void inserOrden(Item n)
     {
         Nodo nuevo= new Nodo(n);
 
@@ -63,6 +60,7 @@ public class LinkedList<Item extends Comparable<Item>> implements Iterable<Item>
             nuevo.sig=ante.sig;
             ante.sig=nuevo; //esto es lo mismo que nuevo.anterior=ante;
         }
+        N++;
     }
 
     public void insertar(Item n)
@@ -78,6 +76,7 @@ public class LinkedList<Item extends Comparable<Item>> implements Iterable<Item>
             ultimo.sig=nuevo;
             ultimo=nuevo;
         }
+        N++;
     }
 
     public void mostrar()
@@ -95,15 +94,26 @@ public class LinkedList<Item extends Comparable<Item>> implements Iterable<Item>
         {   
             Item valor= cabeza.valor;
             cabeza=cabeza.sig;
+            N--;
             return valor;
+            
         }
         return null;
     }
 
-    public Item remove_n(int n)
+    public Item removeN(int n)
     {
-        if(n ==0){
-           cabeza=null;
+        if(cabeza==null)
+        {
+            return null;
+        }
+        else if(n == 0)
+        {	
+        	Item item =cabeza.valor;
+            cabeza = cabeza.sig;
+            N--;
+            return item;
+            
         }
         else if(n < N)
         {
@@ -113,13 +123,14 @@ public class LinkedList<Item extends Comparable<Item>> implements Iterable<Item>
                 while(contador < (n-1))
                 {
                         current=current.sig;
-                        N++;
+                        contador++;
                 }
                 Nodo delete=current.sig;
                 current.sig=delete.sig;
                 delete.sig=null;
                 N--;
                 return delete.valor;
+
         }
         return null;
     }
@@ -130,19 +141,16 @@ public class LinkedList<Item extends Comparable<Item>> implements Iterable<Item>
     private class ListIterator implements Iterator<Item>
     {
         private Nodo actual = cabeza;
-    
+        
         public void remove(){}
 
         public boolean hasNext(){return actual != null;}
 
         public Item next()
-        {
+        {   
             Item valor = actual.valor;
             actual = actual.sig;
             return valor;
         }
     }
-
-    
-
 }
